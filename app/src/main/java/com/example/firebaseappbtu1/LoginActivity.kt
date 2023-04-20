@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
@@ -14,8 +15,8 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var loginEmailEditText : EditText
     private lateinit var loginPasswordEditText : EditText
     private lateinit var loginButton : Button
-    private lateinit var forgotPasswordButton : Button
-    private lateinit var notRegisteredButton : Button
+    private lateinit var forgotPasswordButton : TextView
+    private lateinit var notRegisteredButton : TextView
     private val auth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
