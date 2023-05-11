@@ -6,8 +6,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -33,7 +38,6 @@ class ProfileActivity : AppCompatActivity() {
                 auth.currentUser!!.uid,
                 link, username)
             db.child(auth.currentUser!!.uid).setValue(userInfo)
-
         }
     }
 
@@ -43,6 +47,25 @@ class ProfileActivity : AppCompatActivity() {
         editProfileButton = findViewById(R.id.editProfileButton)
         userNameTextView = findViewById(R.id.userNameTextView)
         imageView = findViewById(R.id.imageView)
+
+        userNameTextView.text = auth.uid
+
+        db.child(auth.uid!!).addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val userInfo = snapshot.getValue(User::class.java) ?: return
+                userNameTextView.text = userInfo.userName
+                val link = userInfo.link
+                Glide.with(this@ProfileActivity).load(link).into(imageView)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@ProfileActivity, error.message, Toast.LENGTH_SHORT).show()
+            }
+
+        }
+
+        )
+
     }
 
 }
